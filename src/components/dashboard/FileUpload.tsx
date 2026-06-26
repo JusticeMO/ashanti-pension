@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Upload, File, X, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button, Alert } from "@/components/ui";
 
 interface FileUploadProps {
   onUpload: (fileName: string) => void;
@@ -100,7 +100,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full font-[family-name:var(--font-body)]">
       <input
         type="file"
         ref={fileInputRef}
@@ -114,31 +114,31 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onClick={handleBrowseClick}
-          className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 hover:border-[#094029] rounded-2xl p-8 bg-slate-50 hover:bg-[#ECFAF2]/30 cursor-pointer transition-all duration-300 text-center"
+          className="flex flex-col items-center justify-center border-2 border-dashed border-[#C8C2BA] hover:border-[#094029] rounded-[20px] p-8 bg-white/40 hover:bg-[#ECFAF2]/30 cursor-pointer transition-all duration-[280ms] text-center shadow-[0_2px_8px_rgba(9,64,41,0.03)]"
         >
           <div className="w-12 h-12 rounded-full bg-[#ECFAF2] flex items-center justify-center text-[#094029] mb-4">
-            <Upload className="w-6 h-6" />
+            <Upload className="w-5 h-5" />
           </div>
-          <p className="text-sm font-semibold text-slate-800 font-sans">{label}</p>
-          <p className="text-xs text-slate-400 mt-1 font-sans">
+          <p className="text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider text-[#1A1714]">{label}</p>
+          <p className="text-[11px] text-[#7A746C] mt-1">
             Drag & drop your file here, or click to browse
           </p>
-          <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider font-sans font-bold">
+          <p className="text-[9px] text-[#A09890] mt-3.5 uppercase tracking-widest font-bold">
             Supports: {allowedTypes.join(", ")} (Max: {maxSizeMB}MB)
           </p>
         </div>
       ) : (
-        <div className="border border-slate-200 bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white/70 backdrop-blur-[20px] border border-white/90 rounded-[20px] p-5 shadow-[0_4px_16px_rgba(9,64,41,0.04)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-                <File className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-[12px] bg-[#F0EDE8] flex items-center justify-center text-[#4A4540]">
+                <File className="w-4 h-4" />
               </div>
               <div className="flex flex-col min-w-0">
-                <p className="text-sm font-semibold text-slate-800 truncate max-w-[200px] sm:max-w-xs font-sans">
+                <p className="text-xs font-bold text-[#1A1714] truncate max-w-[200px] sm:max-w-xs font-[family-name:var(--font-heading)] uppercase tracking-wider">
                   {selectedFile.name}
                 </p>
-                <p className="text-xs text-slate-400 font-sans">
+                <p className="text-[11px] text-[#A09890] mt-0.5">
                   {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
@@ -147,7 +147,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             {uploadProgress === null && (
               <button
                 onClick={handleClearFile}
-                className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full cursor-pointer transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-[#A09890] hover:text-[#B91C1C] hover:bg-[#FEE2E2]/60 rounded-full cursor-pointer transition-all"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -157,14 +157,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           {/* Upload progress indicator */}
           {uploadProgress !== null && (
             <div className="mt-4">
-              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-[#EAE7E0]/60 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#094029] transition-all duration-150"
+                  className="h-full bg-gradient-to-r from-[#094029] to-[#148F58] transition-all duration-150 rounded-full"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mt-2 font-sans">
-                <span>Uploading...</span>
+              <div className="flex items-center justify-between text-[11px] text-[#7A746C] mt-2">
+                <span className="font-bold uppercase tracking-wider">Uploading...</span>
                 <span>{uploadProgress}%</span>
               </div>
             </div>
@@ -172,7 +172,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
           {uploadProgress === null && (
             <div className="mt-4 flex justify-end">
-              <Button onClick={handleUploadSubmit} size="sm">
+              <Button onClick={handleUploadSubmit} variant="primary" size="sm">
                 Submit File
               </Button>
             </div>
@@ -181,10 +181,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       )}
 
       {error && (
-        <div className="flex items-center gap-2 mt-3 p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs rounded-xl font-sans">
-          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-          <span>{error}</span>
-        </div>
+        <Alert variant="error" className="mt-3" icon={<AlertTriangle className="w-4 h-4" />}>
+          {error}
+        </Alert>
       )}
     </div>
   );

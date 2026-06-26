@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MockStore } from "@/lib/mockStore";
 import { Profile, Application, InsuranceProvider } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Select } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Select, Alert } from "@/components/ui";
 import { ArrowLeft, CheckCircle, ShieldAlert, Building } from "lucide-react";
 
 function QuoteRequestForm() {
@@ -101,7 +101,7 @@ function QuoteRequestForm() {
       productType,
       productName,
       premium: premiumNum,
-      benefits: benefitsList.length > 0 ? benefitsList : ["Comprehensive Retirment Cover"],
+      benefits: benefitsList.length > 0 ? benefitsList : ["Comprehensive Retirement Cover"],
       expectedReturns: returnsNum,
       terms: terms || "Standard terms apply.",
       advisorId: currentUser?.id || "advisor-id",
@@ -120,34 +120,34 @@ function QuoteRequestForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-2xl mx-auto font-sans">
+    <div className="flex flex-col gap-6 max-w-2xl mx-auto font-[family-name:var(--font-body)]">
       <div className="flex items-center justify-between">
         <button
           onClick={() => router.push("/advisor")}
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-900 text-xs font-semibold uppercase tracking-wider cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-[#A09890] hover:text-[#094029] text-[0.6875rem] font-bold uppercase tracking-wider cursor-pointer transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back to CRM
         </button>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
-          New underwriter quote request
+        <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#1A1714] leading-tight">
+          New Underwriter Quote Request
         </h1>
-        <p className="text-sm text-slate-400">
+        <p className="text-xs text-[#7A746C] leading-relaxed">
           Source comparative pension packages for assigned clients.
         </p>
       </div>
 
       {isSuccess ? (
-        <Card className="bg-[#ECFAF2] border-2 border-emerald-500/20 text-center py-12 px-6">
+        <Card variant="success" className="text-center py-12 px-6">
           <CardContent className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
-              <CheckCircle className="w-10 h-10" />
+            <div className="w-16 h-16 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center shadow-sm">
+              <CheckCircle className="w-8 h-8" />
             </div>
-            <h3 className="font-serif font-bold text-xl text-emerald-900">Quotation Created & Published</h3>
-            <p className="text-sm text-emerald-700 max-w-sm">
+            <h3 className="font-[family-name:var(--font-heading)] font-bold text-lg text-emerald-900 uppercase tracking-wide">Quotation Created & Published</h3>
+            <p className="text-xs text-emerald-700 max-w-sm">
               The quotation details have been generated and marked as "presented". The client can now review and select this plan. Redirecting...
             </p>
           </CardContent>
@@ -155,9 +155,9 @@ function QuoteRequestForm() {
       ) : (
         <div className="flex flex-col gap-6">
           {/* Client Selection */}
-          <Card>
+          <Card variant="default">
             <CardHeader>
-              <CardTitle className="text-sm">Assigned Client Target</CardTitle>
+              <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Assigned Client Target</CardTitle>
             </CardHeader>
             <CardContent>
               <div>
@@ -179,17 +179,17 @@ function QuoteRequestForm() {
           </Card>
 
           {isLocked ? (
-            <Card className="border-t-4 border-t-rose-500 bg-rose-50/50 shadow-sm p-6 text-center flex flex-col items-center gap-4 py-12">
-              <ShieldAlert className="w-12 h-12 text-rose-500" />
-              <h3 className="font-serif font-bold text-lg text-rose-900">Agent Appointment Lock Active</h3>
-              <p className="text-sm text-slate-500 max-w-md">
+            <Card variant="danger" className="text-center flex flex-col items-center gap-4 py-12 px-6">
+              <ShieldAlert className="w-12 h-12 text-[#B91C1C]" />
+              <h3 className="font-[family-name:var(--font-heading)] font-bold text-lg text-[#7F1D1D] uppercase tracking-wider">Agent Appointment Lock Active</h3>
+              <p className="text-xs text-[#7F1D1D]/90 max-w-md leading-relaxed">
                 You are barred from adding quotations or sourcing terms because this client has not signed the Ashanti Agent Appointment letter yet.
               </p>
             </Card>
           ) : (
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-100/80">
-                <CardTitle className="text-sm font-serif">Quotation Metrics</CardTitle>
+            <Card variant="default">
+              <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-[#EAE7E0]/60">
+                <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Quotation Metrics</CardTitle>
                 <Building className="w-4 h-4 text-[#094029]" />
               </CardHeader>
               <CardContent className="pt-6">
@@ -270,7 +270,7 @@ function QuoteRequestForm() {
                       id="benefits"
                       rows={3}
                       placeholder="e.g. Life cover inclusion&#10;Guaranteed return of 5%&#10;Free critical illness rider"
-                      className="w-full px-4 py-3 font-sans text-sm text-slate-900 bg-white border border-slate-300 rounded-xl outline-none focus:border-[#094029] resize-none"
+                      className="w-full px-4 py-[13px] font-[family-name:var(--font-body)] text-[0.9375rem] text-[#1A1714] bg-white/90 border-[1.5px] border-[#C8C2BA] focus:border-[#0F6B42] focus:bg-white rounded-[14px] outline-none transition-all duration-150 backdrop-blur-[8px] focus:shadow-[0_0_0_4px_rgba(9,64,41,0.09)] resize-none"
                       value={benefits}
                       onChange={(e) => setBenefits(e.target.value)}
                     />
@@ -282,20 +282,20 @@ function QuoteRequestForm() {
                       id="terms"
                       rows={2}
                       placeholder="Enter policy conditions..."
-                      className="w-full px-4 py-3 font-sans text-sm text-slate-900 bg-white border border-slate-300 rounded-xl outline-none focus:border-[#094029] resize-none"
+                      className="w-full px-4 py-[13px] font-[family-name:var(--font-body)] text-[0.9375rem] text-[#1A1714] bg-white/90 border-[1.5px] border-[#C8C2BA] focus:border-[#0F6B42] focus:bg-white rounded-[14px] outline-none transition-all duration-150 backdrop-blur-[8px] focus:shadow-[0_0_0_4px_rgba(9,64,41,0.09)] resize-none"
                       value={terms}
                       onChange={(e) => setTerms(e.target.value)}
                     />
                   </div>
 
                   {error && (
-                    <div className="p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs rounded-xl">
-                      <span>{error}</span>
-                    </div>
+                    <Alert variant="error" icon={<ShieldAlert className="w-4 h-4" />}>
+                      {error}
+                    </Alert>
                   )}
 
                   <div className="flex justify-end pt-2">
-                    <Button type="submit">Submit Quotation</Button>
+                    <Button type="submit" variant="primary">Submit Quotation</Button>
                   </div>
                 </form>
               </CardContent>
@@ -309,7 +309,7 @@ function QuoteRequestForm() {
 
 export default function NewQuotePage() {
   return (
-    <Suspense fallback={<div className="text-center py-6 text-sm text-slate-400">Loading form...</div>}>
+    <Suspense fallback={<div className="text-center py-6 text-sm text-[#7A746C]">Loading form...</div>}>
       <QuoteRequestForm />
     </Suspense>
   );

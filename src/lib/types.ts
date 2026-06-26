@@ -10,6 +10,15 @@ export type ApplicationStage =
   | "product_selected"
   | "completed";
 
+export interface StageInfo {
+  key: ApplicationStage;
+  step: number;
+  label: string;
+  description: string;
+  icon: string;
+}
+
+
 export type QuoteStatus =
   | "requested"
   | "received"
@@ -35,6 +44,9 @@ export interface Profile {
   avatarUrl?: string;
   referralCode?: string;
 }
+
+export type UserProfile = Profile;
+
 
 export interface Application {
   id: string;

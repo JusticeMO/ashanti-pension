@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { MockStore } from "@/lib/mockStore";
 import { InsuranceProvider } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Badge } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Badge, SectionHeader, Alert } from "@/components/ui";
 import { Building, ArrowLeft, Plus, ToggleLeft, ToggleRight, Trash2 } from "lucide-react";
 
 export default function ProvidersPage() {
@@ -65,37 +65,38 @@ export default function ProvidersPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-10 font-sans text-sm text-slate-400">Loading providers...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 font-[family-name:var(--font-body)]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#094029] border-t-transparent" />
+        <span className="text-[0.6875rem] font-bold text-[#7A746C] uppercase tracking-[0.12em] mt-3">Loading providers...</span>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-6 font-sans">
+    <div className="flex flex-col gap-6 font-[family-name:var(--font-body)]">
       <div className="flex items-center justify-between">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-900 text-xs font-semibold uppercase tracking-wider cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-[#A09890] hover:text-[#094029] text-[0.6875rem] font-bold uppercase tracking-wider cursor-pointer transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back
         </button>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-bold uppercase tracking-widest text-[#C49A45]">System Administration</span>
-        <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
-          Insurance Providers & Underwriters
-        </h1>
-        <p className="text-sm text-slate-400">
-          Add or activate registered underwriters for quotation allocations.
-        </p>
-      </div>
+      <SectionHeader
+        overline="System Administration"
+        title="Insurance Providers & Underwriters"
+        subtitle="Add or activate registered underwriters for quotation allocations."
+      />
 
       <div className="grid md:grid-cols-12 gap-6 items-start">
         {/* Add Provider Card */}
-        <Card className="md:col-span-4">
+        <Card variant="default" className="md:col-span-4">
           <CardHeader className="flex flex-row items-center gap-2">
-            <Plus className="w-5 h-5 text-[#094029]" />
-            <CardTitle className="text-base font-serif">Add Underwriter</CardTitle>
+            <Plus className="w-4 h-4 text-[#094029]" />
+            <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Add Underwriter</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleAddProvider} className="flex flex-col gap-4">
@@ -111,9 +112,13 @@ export default function ProvidersPage() {
                 />
               </div>
 
-              {error && <p className="text-xs text-rose-600 font-bold">{error}</p>}
+              {error && (
+                <Alert variant="error">
+                  {error}
+                </Alert>
+              )}
 
-              <Button type="submit" size="sm" className="w-full">
+              <Button type="submit" variant="primary" size="sm" className="w-full">
                 Register Provider
               </Button>
             </form>
@@ -121,26 +126,26 @@ export default function ProvidersPage() {
         </Card>
 
         {/* Providers List Card */}
-        <Card className="md:col-span-8">
-          <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-100">
-            <CardTitle className="text-base font-serif">Registered Underwriters</CardTitle>
+        <Card variant="default" className="md:col-span-8">
+          <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-[#EAE7E0]/60">
+            <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Registered Underwriters</CardTitle>
             <Building className="w-4 h-4 text-[#094029]" />
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs font-sans">
+              <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-50 text-slate-500 border-b border-slate-100 uppercase tracking-wider font-bold">
+                  <tr className="bg-[#F8F6F3] text-[#7A746C] border-b border-[#EAE7E0]/60 uppercase tracking-widest font-bold font-[family-name:var(--font-heading)]">
                     <th className="p-4 pl-6">Company Name</th>
                     <th className="p-4">Underwriting Status</th>
-                    <th className="p-4 pr-6 text-right font-bold">Actions</th>
+                    <th className="p-4 pr-6 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                <tbody className="divide-y divide-[#EAE7E0]/40 font-medium text-[#4A4540]">
                   {providers.map((p) => (
-                    <tr key={p.id} className="hover:bg-slate-50/50">
-                      <td className="p-4 pl-6 font-semibold flex items-center gap-2">
-                        <Building className="w-4 h-4 text-slate-400" />
+                    <tr key={p.id} className="hover:bg-white/40 transition-colors">
+                      <td className="p-4 pl-6 font-bold text-[#1A1714] font-[family-name:var(--font-heading)] uppercase tracking-wider flex items-center gap-2">
+                        <Building className="w-4 h-4 text-[#A09890]" />
                         {p.name}
                       </td>
                       <td className="p-4">
@@ -149,21 +154,21 @@ export default function ProvidersPage() {
                         </Badge>
                       </td>
                       <td className="p-4 pr-6 text-right">
-                        <div className="flex gap-2 justify-end">
+                        <div className="flex gap-2 justify-end items-center">
                           <button
                             onClick={() => handleToggleActive(p.id)}
-                            className="p-1.5 text-slate-500 hover:text-[#094029] hover:bg-slate-100 rounded-lg cursor-pointer transition-colors"
+                            className="p-1.5 text-[#7A746C] hover:text-[#094029] hover:bg-[#F0EDE8] rounded-xl cursor-pointer transition-colors"
                             title={p.active ? "Deactivate" : "Activate"}
                           >
                             {p.active ? (
                               <ToggleRight className="w-5 h-5 text-emerald-600" />
                             ) : (
-                              <ToggleLeft className="w-5 h-5 text-slate-400" />
+                              <ToggleLeft className="w-5 h-5 text-[#A09890]" />
                             )}
                           </button>
                           <button
                             onClick={() => handleDeleteProvider(p.id)}
-                            className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded-lg cursor-pointer transition-colors"
+                            className="p-1.5 text-[#7A746C] hover:text-[#B91C1C] hover:bg-[#FEE2E2]/60 rounded-xl cursor-pointer transition-colors"
                             title="Delete underwriter"
                           >
                             <Trash2 className="w-4 h-4" />

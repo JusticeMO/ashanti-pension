@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input, Label, Button, Select } from "@/components/ui";
+import { Input, Label, Button, Alert } from "@/components/ui";
 import { MockStore } from "@/lib/mockStore";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import { UserRole } from "@/lib/types";
@@ -73,19 +73,19 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6 font-sans">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-6 font-[family-name:var(--font-body)]">
+      <div className="flex flex-col gap-1.5">
         <Link
           href="/"
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-900 text-xs font-semibold uppercase tracking-wider mb-2"
+          className="inline-flex items-center gap-1.5 text-[#A09890] hover:text-[#094029] text-[0.6875rem] font-bold uppercase tracking-wider mb-2 transition-colors duration-150"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back to Home
         </Link>
-        <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
+        <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#1A1714] leading-tight">
           Create Account
         </h1>
-        <p className="text-sm text-slate-400">
+        <p className="text-xs text-[#7A746C] leading-relaxed">
           Get started as a pension client or a platform referrer.
         </p>
       </div>
@@ -128,15 +128,33 @@ function RegisterForm() {
         </div>
 
         <div>
-          <Label htmlFor="role">Account Type</Label>
-          <Select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as UserRole)}
-          >
-            <option value="client">Client (Pension Review & Advisory)</option>
-            <option value="referrer">Referrer (Earn Referral Commissions)</option>
-          </Select>
+          <Label>Account Type</Label>
+          <div className="grid grid-cols-2 gap-3 mt-1">
+            <button
+              type="button"
+              onClick={() => setRole("client")}
+              className={`p-3.5 rounded-[14px] border-[1.5px] text-left cursor-pointer transition-all duration-200 ${
+                role === "client"
+                  ? "border-[#094029] bg-[#ECFAF2]/60 shadow-[0_4px_16px_rgba(9,64,41,0.06)]"
+                  : "border-[#C8C2BA] bg-white/40 hover:bg-white hover:border-[#094029]"
+              }`}
+            >
+              <div className="font-bold text-xs text-[#1A1714] font-[family-name:var(--font-heading)] uppercase tracking-wider">Client</div>
+              <div className="text-[10px] text-[#7A746C] mt-1 leading-snug">Pension Review & Advisory</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("referrer")}
+              className={`p-3.5 rounded-[14px] border-[1.5px] text-left cursor-pointer transition-all duration-200 ${
+                role === "referrer"
+                  ? "border-[#094029] bg-[#ECFAF2]/60 shadow-[0_4px_16px_rgba(9,64,41,0.06)]"
+                  : "border-[#C8C2BA] bg-white/40 hover:bg-white hover:border-[#094029]"
+              }`}
+            >
+              <div className="font-bold text-xs text-[#1A1714] font-[family-name:var(--font-heading)] uppercase tracking-wider">Referrer</div>
+              <div className="text-[10px] text-[#7A746C] mt-1 leading-snug">Earn Referral Commissions</div>
+            </button>
+          </div>
         </div>
 
         {role === "client" && (
@@ -149,27 +167,26 @@ function RegisterForm() {
               onChange={(e) => setReferrerCode(e.target.value)}
               placeholder="e.g. GRACE555"
             />
-            <p className="text-[10px] text-slate-400 mt-1 font-sans">
+            <p className="text-[10px] text-[#A09890] mt-1 font-sans">
               Enter a friend's code to link your account to their referral tree.
             </p>
           </div>
         )}
 
         {error && (
-          <div className="flex items-center gap-2 p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs rounded-xl">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            <span>{error}</span>
-          </div>
+          <Alert variant="error" icon={<AlertCircle className="w-4 h-4" />}>
+            {error}
+          </Alert>
         )}
 
-        <Button type="submit" isLoading={isLoading} className="w-full mt-2">
+        <Button type="submit" variant="primary" isLoading={isLoading} className="w-full mt-2">
           Register & Log In
         </Button>
       </form>
 
-      <div className="flex items-center justify-between text-xs font-semibold font-sans mt-2">
-        <span className="text-slate-400">Already have an account?</span>
-        <Link href="/login" className="text-[#094029] hover:underline uppercase tracking-wider">
+      <div className="flex items-center justify-between text-xs font-bold font-[family-name:var(--font-heading)] mt-2">
+        <span className="text-[#A09890]">Already have an account?</span>
+        <Link href="/login" className="text-[#094029] hover:text-[#C49A45] transition-colors uppercase tracking-wider">
           Log In
         </Link>
       </div>
@@ -179,7 +196,7 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="text-center py-6 text-sm text-slate-400">Loading form...</div>}>
+    <Suspense fallback={<div className="text-center py-6 text-sm text-[#7A746C]">Loading form...</div>}>
       <RegisterForm />
     </Suspense>
   );

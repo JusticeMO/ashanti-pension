@@ -81,8 +81,8 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({ currentStage }) 
   const currentIndex = getStageIndex(currentStage);
 
   return (
-    <div className="flex flex-col w-full max-w-lg mx-auto bg-white p-6 rounded-2xl border border-slate-200/80">
-      <h3 className="text-lg font-bold font-serif text-slate-900 mb-6 border-b pb-3 border-slate-100">
+    <div className="bg-white/75 backdrop-blur-[20px] border border-white/90 p-6 rounded-[24px] shadow-[0_8px_32px_rgba(9,64,41,0.05),0_2px_8px_rgba(9,64,41,0.03)] flex flex-col w-full max-w-lg mx-auto font-[family-name:var(--font-body)]">
+      <h3 className="text-sm font-bold font-[family-name:var(--font-heading)] text-[#1A1714] mb-6 border-b border-[#EAE7E0]/60 pb-3 uppercase tracking-wider">
         Advisory Progress
       </h3>
       <div className="relative flex flex-col gap-6">
@@ -94,12 +94,12 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({ currentStage }) 
           const IconComponent = step.icon;
 
           return (
-            <div key={step.stage} className="relative flex gap-4 items-start">
+            <div key={step.stage} className="relative flex gap-4 items-start group">
               {/* Vertical line connector */}
               {idx !== STEPS.length - 1 && (
                 <div
-                  className={`absolute left-5 top-10 bottom-0 w-0.5 -mb-6 ${
-                    isCompleted ? "bg-[#094029]" : "bg-slate-200"
+                  className={`absolute left-5 top-10 bottom-0 w-[2px] -mb-6 transition-all duration-300 ${
+                    isCompleted ? "bg-[#094029]" : "bg-[#EAE7E0]/80"
                   }`}
                   style={{ zIndex: 0 }}
                 />
@@ -107,32 +107,32 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({ currentStage }) 
 
               {/* Step indicator dot */}
               <div
-                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
+                className={`relative flex items-center justify-center w-10 h-10 rounded-full border-[1.5px] transition-all duration-300 ${
                   isCompleted
-                    ? "bg-[#094029] border-[#094029] text-white shadow-sm"
+                    ? "bg-[#094029] border-[#094029] text-white shadow-[0_2px_8px_rgba(9,64,41,0.2)]"
                     : isActive
-                    ? "bg-[#C49A45] border-[#C49A45] text-white shadow-[0_0_0_4px_rgba(196,154,69,0.2)] animate-pulse"
-                    : "bg-slate-50 border-slate-300 text-slate-400"
+                    ? "bg-[#C49A45] border-[#C49A45] text-white shadow-[0_0_0_4px_rgba(196,154,69,0.22)] animate-pulse"
+                    : "bg-[#F8F6F3] border-[#C8C2BA] text-[#A09890]"
                 }`}
                 style={{ zIndex: 1 }}
               >
-                <IconComponent className="w-5 h-5" />
+                <IconComponent className="w-4 h-4" />
               </div>
 
               {/* Step Info */}
-              <div className="flex flex-col pt-1">
+              <div className="flex flex-col pt-0.5">
                 <span
-                  className={`text-sm font-semibold tracking-wide font-sans ${
+                  className={`text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider transition-colors duration-200 ${
                     isActive
                       ? "text-[#C49A45]"
                       : isCompleted
                       ? "text-[#094029]"
-                      : "text-slate-500"
+                      : "text-[#7A746C]"
                   }`}
                 >
                   {step.label}
                 </span>
-                <span className="text-xs text-slate-400 mt-0.5 leading-relaxed font-sans">
+                <span className="text-[11px] text-[#A09890] mt-1 leading-relaxed">
                   {step.description}
                 </span>
               </div>

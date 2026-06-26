@@ -4,17 +4,18 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Ashanti Pension Advisory & Referral Platform",
   description:
-    "Expert pension advisory services. Unlock your pension value with trusted guidance from Ashanti Pension.",
+    "Expert pension advisory services. Unlock your pension value with trusted guidance from Ashanti Pension — Kenya's leading intermediary.",
   keywords: [
-    "pension advisory",
-    "pension Kenya",
+    "pension advisory Kenya",
     "retirement planning",
     "pension transfer",
     "Ashanti pension",
-    "pension agent",
+    "pension agent Kenya",
+    "RBA regulated",
     "pension quotation",
+    "cashback pension",
   ],
-  authors: [{ name: "Ashanti Pension" }],
+  authors: [{ name: "Ashanti Pension Advisory" }],
   openGraph: {
     title: "Ashanti Pension Advisory & Referral Platform",
     description:
@@ -23,10 +24,7 @@ export const metadata: Metadata = {
     locale: "en_KE",
     siteName: "Ashanti Pension",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -38,19 +36,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="antialiased">{children}</body>
     </html>

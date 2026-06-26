@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MockStore } from "@/lib/mockStore";
 import { Application, Profile, Quote, ApplicationStage } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle, Button, Badge, SectionHeader, StatCard } from "@/components/ui";
 import {
   Users,
   ChevronRight,
@@ -140,7 +140,12 @@ export default function AdvisorDashboard() {
   };
 
   if (loading) {
-    return <div className="text-center py-10 font-sans text-sm text-slate-400">Loading pipeline...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 font-[family-name:var(--font-body)]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#094029] border-t-transparent" />
+        <span className="text-[0.6875rem] font-bold text-[#7A746C] uppercase tracking-[0.12em] mt-3">Loading pipeline...</span>
+      </div>
+    );
   }
 
   // Group applications for pipeline columns
@@ -152,56 +157,39 @@ export default function AdvisorDashboard() {
   ];
 
   return (
-    <div className="flex flex-col gap-8 font-sans">
-      <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-bold uppercase tracking-widest text-[#C49A45]">Advisor Workspace</span>
-        <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
-          Client Advisory Pipeline
-        </h1>
-        <p className="text-sm text-slate-400">
-          Track agent appointments, review worksheets, compile underwriter bids, and manage conversions.
-        </p>
-      </div>
+    <div className="flex flex-col gap-8 font-[family-name:var(--font-body)]">
+      <SectionHeader
+        overline="Advisor Workspace"
+        title="Client Advisory Pipeline"
+        subtitle="Track agent appointments, review worksheets, compile underwriter bids, and manage conversions."
+      />
 
       {/* CRM Statistics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4 flex items-center gap-3">
-          <Users className="w-8 h-8 text-[#094029] bg-[#ECFAF2] p-1.5 rounded-xl flex-shrink-0" />
-          <div className="flex flex-col min-w-0">
-            <span className="text-xl font-bold font-serif text-slate-950">{apps.length}</span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Clients Assigned</span>
-          </div>
-        </Card>
-
-        <Card className="p-4 flex items-center gap-3">
-          <FileSignature className="w-8 h-8 text-[#A37F35] bg-[#FBF6EC] p-1.5 rounded-xl flex-shrink-0" />
-          <div className="flex flex-col min-w-0">
-            <span className="text-xl font-bold font-serif text-slate-950">
-              {apps.filter((a) => a.stage === "profile_complete" || a.stage === "appointment_pending").length}
-            </span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Awaiting Appointment</span>
-          </div>
-        </Card>
-
-        <Card className="p-4 flex items-center gap-3">
-          <Hourglass className="w-8 h-8 text-[#094029] bg-[#ECFAF2] p-1.5 rounded-xl flex-shrink-0" />
-          <div className="flex flex-col min-w-0">
-            <span className="text-xl font-bold font-serif text-slate-950">
-              {apps.filter((a) => a.stage === "quotes_preparing" || a.stage === "options_ready").length}
-            </span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Quote Evaluations</span>
-          </div>
-        </Card>
-
-        <Card className="p-4 flex items-center gap-3">
-          <CheckSquare className="w-8 h-8 text-emerald-600 bg-emerald-50 p-1.5 rounded-xl flex-shrink-0" />
-          <div className="flex flex-col min-w-0">
-            <span className="text-xl font-bold font-serif text-slate-950">
-              {apps.filter((a) => a.stage === "completed").length}
-            </span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Conversions</span>
-          </div>
-        </Card>
+        <StatCard
+          icon={<Users className="w-5 h-5 text-[#094029]" />}
+          iconBg="bg-[#ECFAF2]"
+          value={apps.length}
+          label="Clients Assigned"
+        />
+        <StatCard
+          icon={<FileSignature className="w-5 h-5 text-[#8A6A25]" />}
+          iconBg="bg-[#FBF8F0]"
+          value={apps.filter((a) => a.stage === "profile_complete" || a.stage === "appointment_pending").length}
+          label="Awaiting Appt"
+        />
+        <StatCard
+          icon={<Hourglass className="w-5 h-5 text-[#094029]" />}
+          iconBg="bg-[#ECFAF2]"
+          value={apps.filter((a) => a.stage === "quotes_preparing" || a.stage === "options_ready").length}
+          label="Quote Evaluations"
+        />
+        <StatCard
+          icon={<CheckSquare className="w-5 h-5 text-emerald-700" />}
+          iconBg="bg-emerald-50"
+          value={apps.filter((a) => a.stage === "completed").length}
+          label="Conversions"
+        />
       </div>
 
       {/* CRM Columns View */}
@@ -210,16 +198,16 @@ export default function AdvisorDashboard() {
           const colApps = apps.filter((a) => col.stages.includes(a.stage));
 
           return (
-            <div key={cIdx} className="flex flex-col gap-4">
-              <div className="flex items-center justify-between border-b pb-2 border-slate-200">
-                <h3 className="font-serif font-bold text-sm text-slate-800">{col.title}</h3>
+            <div key={cIdx} className="flex flex-col gap-4 min-w-0">
+              <div className="flex items-center justify-between border-b border-[#EAE7E0]/60 pb-2">
+                <h3 className="font-[family-name:var(--font-heading)] font-bold text-xs uppercase tracking-wider text-[#4A4540] truncate pr-2">{col.title}</h3>
                 <Badge variant={colApps.length > 0 ? "gold" : "default"}>
                   {colApps.length}
                 </Badge>
               </div>
 
               {colApps.length === 0 ? (
-                <div className="text-center py-8 border border-dashed border-slate-200 text-xs text-slate-400 rounded-2xl bg-white/40">
+                <div className="text-center py-8 border border-dashed border-[#C8C2BA] text-[10px] font-bold uppercase tracking-wider text-[#A09890] rounded-[20px] bg-white/40 select-none">
                   Empty State
                 </div>
               ) : (
@@ -235,49 +223,47 @@ export default function AdvisorDashboard() {
                     return (
                       <Card
                         key={appItem.id}
-                        className={`hover:border-[#094029] transition-all cursor-pointer ${
-                          isSelected ? "ring-2 ring-[#094029]/30" : ""
-                        }`}
+                        variant={isSelected ? "gold" : "default"}
+                        className="cursor-pointer"
                         onClick={() => setSelectedAppId(isSelected ? null : appItem.id)}
                       >
                         <CardContent className="p-4 flex flex-col gap-3">
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-xs font-bold text-slate-800 font-sans truncate">
+                          <div className="flex items-center justify-between gap-1.5 min-w-0">
+                            <span className="text-xs font-bold text-[#1A1714] font-[family-name:var(--font-heading)] uppercase tracking-wider truncate">
                               {getClientName(appItem.clientId)}
                             </span>
-                            <Badge variant={getStageColor(appItem.stage)}>
+                            <Badge variant={getStageColor(appItem.stage)} className="flex-shrink-0">
                               {getStageLabel(appItem.stage).split(" ").slice(0, 2).join(" ")}
                             </Badge>
                           </div>
 
-                          <div className="flex flex-col text-[10px] text-slate-400 gap-1 font-sans">
+                          <div className="flex flex-col text-[10px] text-[#7A746C] gap-1">
                             <span className="truncate">{getClientEmail(appItem.clientId)}</span>
-                            <span>Attribution: <strong>{getReferrerName(appItem.referrerId)}</strong></span>
+                            <span>Attribution: <strong className="text-[#094029] uppercase">{getReferrerName(appItem.referrerId)}</strong></span>
                           </div>
 
                           {/* Gating lock alert badge */}
                           {!hasAppointed && (
-                            <div className="flex items-center gap-1 text-[9px] bg-rose-50 text-rose-700 font-bold p-1 px-2 rounded-lg mt-1 w-fit uppercase font-sans tracking-wide">
-                              <Lock className="w-3 h-3 text-rose-600" />
-                              Advisory Sourcing Locked
+                            <div className="inline-flex items-center gap-1.5 text-[9px] bg-red-50 text-[#B91C1C] font-bold p-1 px-2.5 rounded-lg border border-red-100 mt-1 w-fit uppercase tracking-wider">
+                              <Lock className="w-3 h-3 text-[#B91C1C]" />
+                              Advisory locked
                             </div>
                           )}
 
                           {isSelected && (
-                            <div className="flex flex-col gap-2 pt-2 border-t border-slate-100 mt-2 animate-fade-in">
-                              <div className="text-[10px] text-slate-500 font-sans flex flex-col gap-1.5 bg-slate-50 p-2.5 rounded-xl border">
+                            <div className="flex flex-col gap-2.5 pt-3.5 border-t border-[#EAE7E0]/60 mt-2 animate-fade-in">
+                              <div className="text-[10px] text-[#7A746C] flex flex-col gap-1.5 bg-[#F8F6F3] p-2.5 rounded-xl border border-[#EAE7E0]/80">
                                 <div>
                                   <strong>Full Stage:</strong> {getStageLabel(appItem.stage)}
                                 </div>
                                 {clientQuotes.length > 0 && (
                                   <div>
-                                    <strong>Quotes added:</strong> {clientQuotes.length} (
-                                    {clientQuotes.map((q) => q.provider).join(", ")})
+                                    <strong>Quotes Added:</strong> {clientQuotes.length} ({clientQuotes.map((q) => q.provider).join(", ")})
                                   </div>
                                 )}
                               </div>
 
-                              <div className="flex flex-col gap-1.5">
+                              <div className="flex flex-col gap-2">
                                 {hasAppointed ? (
                                   <Button
                                     onClick={(e) => {
@@ -286,7 +272,7 @@ export default function AdvisorDashboard() {
                                     }}
                                     size="sm"
                                     variant="outline-green"
-                                    className="w-full text-xs py-2"
+                                    className="w-full text-[10px]"
                                   >
                                     Add Quotation
                                   </Button>
@@ -299,7 +285,7 @@ export default function AdvisorDashboard() {
                                     size="sm"
                                     variant="ghost"
                                     disabled
-                                    className="w-full text-xs py-2"
+                                    className="w-full text-[10px]"
                                   >
                                     Quotation Sourcing Locked
                                   </Button>
@@ -312,10 +298,11 @@ export default function AdvisorDashboard() {
                                       handleAdvance(appItem.id, appItem.stage);
                                     }}
                                     size="sm"
-                                    className="w-full text-xs py-2"
+                                    variant="primary"
+                                    className="w-full text-[10px]"
                                     isLoading={advancingStage}
                                   >
-                                    Advance Pipeline Stage
+                                    Advance Stage
                                   </Button>
                                 )}
                               </div>

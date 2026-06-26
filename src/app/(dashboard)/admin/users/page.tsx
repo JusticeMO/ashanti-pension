@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { MockStore } from "@/lib/mockStore";
 import { Profile, UserRole } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Select } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle, Badge, Button, Select, SectionHeader } from "@/components/ui";
 import { ArrowLeft, UserCog, UserCheck, Trash2 } from "lucide-react";
 
 export default function UserAccountsPage() {
@@ -47,43 +47,45 @@ export default function UserAccountsPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-10 font-sans text-sm text-slate-400">Loading accounts ledger...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 font-[family-name:var(--font-body)]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#094029] border-t-transparent" />
+        <span className="text-[0.6875rem] font-bold text-[#7A746C] uppercase tracking-[0.12em] mt-3">Loading accounts ledger...</span>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-6 font-sans">
+    <div className="flex flex-col gap-6 font-[family-name:var(--font-body)]">
       <div className="flex items-center justify-between">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-900 text-xs font-semibold uppercase tracking-wider cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-[#A09890] hover:text-[#094029] text-[0.6875rem] font-bold uppercase tracking-wider cursor-pointer transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back
         </button>
-        <span className="text-xs text-slate-400 font-bold">
+        <span className="text-[10px] text-[#A09890] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)]">
           System Accounts: {profiles.length}
         </span>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
-          System User Accounts
-        </h1>
-        <p className="text-sm text-slate-400">
-          Monitor active registration records and adjust operational roles.
-        </p>
-      </div>
+      <SectionHeader
+        overline="System Administration"
+        title="System User Accounts"
+        subtitle="Monitor active registration records and adjust operational roles."
+      />
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-100">
-          <CardTitle className="text-base font-serif">Registry Table</CardTitle>
+      <Card variant="default">
+        <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-[#EAE7E0]/60">
+          <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Registry Table</CardTitle>
           <UserCog className="w-4 h-4 text-[#094029]" />
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs font-sans">
               <thead>
-                <tr className="bg-slate-50 text-slate-500 border-b border-slate-100 uppercase tracking-wider font-bold">
+                <tr className="bg-[#F8F6F3] text-[#7A746C] border-b border-[#EAE7E0]/60 uppercase tracking-widest font-bold font-[family-name:var(--font-heading)]">
                   <th className="p-4 pl-6">User Name</th>
                   <th className="p-4">Email Address</th>
                   <th className="p-4">Phone Number</th>
@@ -92,24 +94,24 @@ export default function UserAccountsPage() {
                   <th className="p-4 pr-6 text-right">Adjust Access</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+              <tbody className="divide-y divide-[#EAE7E0]/40 font-medium text-[#4A4540]">
                 {profiles.map((user) => (
-                  <tr key={user.id} className="hover:bg-slate-50/50">
-                    <td className="p-4 pl-6 font-semibold flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center font-bold text-[10px] text-slate-600">
+                  <tr key={user.id} className="hover:bg-white/40 transition-colors">
+                    <td className="p-4 pl-6 font-bold text-[#1A1714] font-[family-name:var(--font-heading)] uppercase tracking-wider flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-[#F0EDE8] flex items-center justify-center font-bold text-[9px] text-[#7A746C] uppercase">
                         {user.fullName.charAt(0)}
                       </div>
                       {user.fullName}
                     </td>
-                    <td className="p-4 text-slate-500">{user.email}</td>
-                    <td className="p-4 text-slate-400">{user.phone}</td>
-                    <td className="p-4 font-mono font-bold text-[#A37F35]">
+                    <td className="p-4 text-[#7A746C]">{user.email}</td>
+                    <td className="p-4 text-[#A09890]">{user.phone}</td>
+                    <td className="p-4 font-mono font-bold text-[#8A6A25]">
                       {user.referralCode || "-"}
                     </td>
                     <td className="p-4">{getRoleBadge(user.role)}</td>
                     <td className="p-4 pr-6 text-right">
                       {user.email === "admin@ashanti.com" ? (
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                        <span className="text-[10px] text-[#A09890] font-bold uppercase tracking-wider">
                           Primary Admin Lock
                         </span>
                       ) : (

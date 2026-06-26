@@ -5,7 +5,7 @@ import Link from "next/link";
 import { StatusTimeline } from "@/components/dashboard/StatusTimeline";
 import { MockStore } from "@/lib/mockStore";
 import { Application, Profile } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle, Button, Badge, SectionHeader } from "@/components/ui";
 import { FileSignature, UploadCloud, FileStack, ShieldCheck, HeartHandshake, AlertCircle } from "lucide-react";
 
 export default function ClientDashboard() {
@@ -28,15 +28,22 @@ export default function ClientDashboard() {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-10 font-sans text-sm text-slate-400">Loading client data...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 font-[family-name:var(--font-body)]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#094029] border-t-transparent" />
+        <span className="text-[0.6875rem] font-bold text-[#7A746C] uppercase tracking-[0.12em] mt-3">Loading client data...</span>
+      </div>
+    );
   }
 
   if (!currentUser || !app) {
     return (
-      <div className="flex flex-col items-center gap-4 text-center py-12">
-        <AlertCircle className="w-12 h-12 text-rose-500" />
-        <h3 className="font-serif font-bold text-xl text-slate-900">Application Record Missing</h3>
-        <p className="text-sm text-slate-500 max-w-sm font-sans">
+      <div className="flex flex-col items-center gap-4 text-center py-20 font-[family-name:var(--font-body)]">
+        <div className="p-3 bg-red-50 border border-red-100 rounded-full text-[#B91C1C]">
+          <AlertCircle className="w-10 h-10" />
+        </div>
+        <h3 className="font-[family-name:var(--font-heading)] font-extrabold text-xl text-[#1A1714]">Application Record Missing</h3>
+        <p className="text-xs text-[#7A746C] max-w-xs leading-relaxed">
           Could not find an active advisory application for your account. Please contact advisory support.
         </p>
       </div>
@@ -52,18 +59,18 @@ export default function ClientDashboard() {
           <Card variant="gold">
             <CardHeader>
               <div className="flex items-center gap-2 text-[#C49A45] mb-1">
-                <FileSignature className="w-5 h-5 animate-bounce" />
-                <span className="text-xs font-bold uppercase tracking-wider font-sans">Action Required</span>
+                <FileSignature className="w-4 h-4" />
+                <span className="text-[0.625rem] font-bold uppercase tracking-wider font-[family-name:var(--font-heading)]">Action Required</span>
               </div>
               <CardTitle>Sign Agent Appointment Letter</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <p className="text-sm text-slate-600 leading-relaxed font-sans">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 To initiate the pension review, you must first authorize Ashanti Pension as your broker of record. This lets us legally request quotations from regulated insurance providers.
               </p>
               <div>
                 <Link href="/client/appointment">
-                  <Button size="sm">Review & Sign Appointment</Button>
+                  <Button variant="primary" size="sm">Review & Sign Appointment</Button>
                 </Link>
               </div>
             </CardContent>
@@ -75,18 +82,18 @@ export default function ClientDashboard() {
           <Card variant="green">
             <CardHeader>
               <div className="flex items-center gap-2 text-[#094029] mb-1">
-                <UploadCloud className="w-5 h-5 animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider font-sans">Action Required</span>
+                <UploadCloud className="w-4 h-4" />
+                <span className="text-[0.625rem] font-bold uppercase tracking-wider font-[family-name:var(--font-heading)]">Action Required</span>
               </div>
               <CardTitle>Upload Your Pension Worksheet</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <p className="text-sm text-slate-600 leading-relaxed font-sans">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 Ashanti is now appointed as your pension agent! To help us analyze your current scheme, please upload your latest pension statement or worksheet.
               </p>
               <div>
                 <Link href="/client/worksheet">
-                  <Button size="sm">Upload Pension Worksheet</Button>
+                  <Button variant="secondary" size="sm">Upload Pension Worksheet</Button>
                 </Link>
               </div>
             </CardContent>
@@ -95,16 +102,16 @@ export default function ClientDashboard() {
 
       case "worksheet_review":
         return (
-          <Card>
+          <Card variant="default">
             <CardHeader>
               <CardTitle>Worksheet Under Review</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 font-sans">
-              <p className="text-sm text-slate-600 leading-relaxed">
+            <CardContent className="flex flex-col gap-3">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 Your uploaded pension worksheet is being evaluated by your assigned advisor. Once verified, we will request quotation options.
               </p>
-              <div className="flex gap-2 items-center text-xs font-bold text-slate-400 bg-slate-50 p-3 rounded-xl">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#C49A45] animate-ping" />
+              <div className="flex gap-2 items-center text-[10px] font-bold uppercase tracking-wider text-[#8A6A25] bg-[#FBF8F0] p-3 rounded-xl border border-[rgba(196,154,69,0.22)]">
+                <div className="w-2 h-2 rounded-full bg-[#C49A45] animate-ping" />
                 <span>Advisor Status: Verifying Current Values</span>
               </div>
             </CardContent>
@@ -113,16 +120,16 @@ export default function ClientDashboard() {
 
       case "quotes_preparing":
         return (
-          <Card>
+          <Card variant="default">
             <CardHeader>
               <CardTitle>Acquiring Comparative Quotes</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 font-sans">
-              <p className="text-sm text-slate-600 leading-relaxed">
+            <CardContent className="flex flex-col gap-3">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 Your advisor is currently requesting comparative terms and rates from ICEA LION, Britam, Jubilee, and other top-tier providers.
               </p>
-              <div className="flex gap-2 items-center text-xs font-bold text-[#094029] bg-[#ECFAF2] p-3 rounded-xl">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#094029] animate-pulse" />
+              <div className="flex gap-2 items-center text-[10px] font-bold uppercase tracking-wider text-[#094029] bg-[#ECFAF2] p-3 rounded-xl border border-[rgba(9,64,41,0.15)]">
+                <div className="w-2 h-2 rounded-full bg-[#094029] animate-pulse" />
                 <span>Advisor Status: Underwriter Negotiations Active</span>
               </div>
             </CardContent>
@@ -134,18 +141,18 @@ export default function ClientDashboard() {
           <Card variant="gold">
             <CardHeader>
               <div className="flex items-center gap-2 text-[#C49A45] mb-1">
-                <FileStack className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider font-sans">Action Required</span>
+                <FileStack className="w-4 h-4" />
+                <span className="text-[0.625rem] font-bold uppercase tracking-wider font-[family-name:var(--font-heading)]">Action Required</span>
               </div>
               <CardTitle>Compare Advisory Options</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <p className="text-sm text-slate-600 leading-relaxed font-sans">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 Your advisor has compiled comparative pension offers. Review the benefits, expected returns, and terms to select your ideal plan.
               </p>
               <div>
                 <Link href="/client/quotes">
-                  <Button size="sm">Compare & Select Option</Button>
+                  <Button variant="primary" size="sm">Compare & Select Option</Button>
                 </Link>
               </div>
             </CardContent>
@@ -157,16 +164,16 @@ export default function ClientDashboard() {
           <Card variant="green">
             <CardHeader>
               <div className="flex items-center gap-2 text-[#094029] mb-1">
-                <ShieldCheck className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider font-sans">Status</span>
+                <ShieldCheck className="w-4 h-4" />
+                <span className="text-[0.625rem] font-bold uppercase tracking-wider font-[family-name:var(--font-heading)]">Status</span>
               </div>
               <CardTitle>Preparing Policy Package</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 font-sans">
-              <p className="text-sm text-slate-600 leading-relaxed">
+            <CardContent className="flex flex-col gap-3">
+              <p className="text-xs text-[#7A746C] leading-relaxed">
                 Thank you for choosing your pension product. Our advisors are compiling your official policy documents with the insurer.
               </p>
-              <div className="text-xs text-slate-400 bg-slate-50 p-3 rounded-xl">
+              <div className="text-[10px] font-semibold text-[#A09890] bg-[#F8F6F3] p-3 rounded-xl border border-[#EAE7E0] uppercase tracking-wider text-center">
                 We'll notify you when the policy is complete and your cashback is disbursed.
               </div>
             </CardContent>
@@ -175,21 +182,21 @@ export default function ClientDashboard() {
 
       case "completed":
         return (
-          <Card className="bg-[#ECFAF2] border-2 border-emerald-500/20">
+          <Card variant="success">
             <CardHeader>
               <div className="flex items-center gap-2 text-[#094029] mb-1">
-                <HeartHandshake className="w-5 h-5 text-emerald-600" />
-                <span className="text-xs font-bold uppercase tracking-wider font-sans">Complete</span>
+                <HeartHandshake className="w-4 h-4 text-emerald-600 animate-pulse" />
+                <span className="text-[0.625rem] font-bold uppercase tracking-wider font-[family-name:var(--font-heading)]">Complete</span>
               </div>
               <CardTitle className="text-emerald-900">Pension Advisory Complete</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 font-sans">
-              <p className="text-sm text-emerald-800 leading-relaxed">
+            <CardContent className="flex flex-col gap-3">
+              <p className="text-xs text-emerald-800 leading-relaxed">
                 Congratulations! Your new pension policy is officially activated. Ashanti commission shares and cashback calculations have been processed.
               </p>
-              <div className="text-xs font-bold text-[#094029] bg-white p-3 rounded-xl border border-emerald-100 flex items-center justify-between">
+              <div className="text-[11px] font-bold text-[#094029] bg-white/80 backdrop-blur-sm p-3.5 rounded-xl border border-emerald-200/50 flex items-center justify-between uppercase tracking-wider font-[family-name:var(--font-heading)]">
                 <span>Total Cashback Payout:</span>
-                <span className="text-sm font-serif">50% Net Agent Commission</span>
+                <span className="text-xs font-extrabold text-[#C49A45] bg-[#094029] px-2.5 py-0.5 rounded-full">50% Net Commission</span>
               </div>
             </CardContent>
           </Card>
@@ -201,37 +208,33 @@ export default function ClientDashboard() {
   };
 
   return (
-    <div className="grid lg:grid-cols-12 gap-8 font-sans items-start">
+    <div className="grid lg:grid-cols-12 gap-8 font-[family-name:var(--font-body)] items-start">
       {/* Left panel: welcome & action widgets */}
       <div className="lg:col-span-7 flex flex-col gap-8">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#C49A45]">Welcome Back</span>
-          <h1 className="font-serif text-3xl font-bold text-slate-900 leading-tight">
-            {currentUser.fullName}
-          </h1>
-          <p className="text-sm text-slate-500">
-            Monitor and complete actions in your retirement advisory timeline.
-          </p>
-        </div>
+        <SectionHeader
+          overline="Welcome Back"
+          title={currentUser.fullName}
+          subtitle="Monitor and complete actions in your retirement advisory timeline."
+        />
 
         {renderActionBlock()}
 
         {/* General Guidelines for Client */}
-        <Card className="bg-white">
+        <Card variant="flat">
           <CardHeader>
-            <CardTitle className="text-sm">Platform Guidelines</CardTitle>
+            <CardTitle className="text-xs uppercase tracking-wider text-[#4A4540]">Platform Guidelines</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3 text-xs leading-relaxed text-slate-500 font-sans">
-            <div className="flex gap-2">
+          <CardContent className="flex flex-col gap-3 text-xs leading-relaxed text-[#7A746C]">
+            <div className="flex gap-2.5">
               <div className="w-1.5 h-1.5 rounded-full bg-[#C49A45] mt-1.5 flex-shrink-0" />
               <p>
-                <strong>Relationship Lock:</strong> Ashanti cannot request quotes until you appoint us as agent. This secures your access to cashback.
+                <strong className="text-[#1A1714]">Relationship Lock:</strong> Ashanti cannot request quotes until you appoint us as agent. This secures your access to cashback.
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
               <div className="w-1.5 h-1.5 rounded-full bg-[#C49A45] mt-1.5 flex-shrink-0" />
               <p>
-                <strong>Commission Payouts:</strong> Ashanti passes 50% of the net commission received back to the client directly.
+                <strong className="text-[#1A1714]">Commission Payouts:</strong> Ashanti passes 50% of the net commission received back to the client directly.
               </p>
             </div>
           </CardContent>
